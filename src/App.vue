@@ -1,26 +1,21 @@
 <template>
   <div id="app">
     <div class="wrap card-panel indigo lighten-4">
-      <h4>Oxem test users tables</h4>
+      <h4>oXem user table</h4>
       <response-table></response-table>
     </div>
   </div>
 </template>
 <script>
 import "materialize-css/dist/css/materialize.min.css";
-import "materialize-css/dist/js/materialize.js";
 import "material-design-icons/iconfont/material-icons.css";
+import "materialize-css/dist/js/materialize.js";
 import ResponseTable from "./components/ResponseTable";
 
 export default {
   name: "App",
   components: {
     ResponseTable
-  },
-  data: function () {
-    return {
-      firstName: ''
-    }
   },
   mounted() {
     // eslint-disable-next-line no-undef
