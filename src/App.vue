@@ -1,22 +1,38 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <div class="wrap card-panel indigo lighten-4">
+      <h4>Oxem test users tables</h4>
+      <response-table></response-table>
+    </div>
   </div>
 </template>
-
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import "materialize-css/dist/css/materialize.min.css";
+import "materialize-css/dist/js/materialize.js";
+import "material-design-icons/iconfont/material-icons.css";
+import ResponseTable from "./components/ResponseTable";
 
 export default {
   name: "App",
   components: {
-    HelloWorld,
+    ResponseTable
   },
+  data: function () {
+    return {
+      firstName: ''
+    }
+  },
+  mounted() {
+    // eslint-disable-next-line no-undef
+    M.updateTextFields();
+  }
 };
 </script>
 
 <style lang="scss">
+html {
+  background: #e8eaf6;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -24,5 +40,10 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+.wrap {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 900px;
 }
 </style>
