@@ -106,6 +106,9 @@ export default {
           this.pagesArray.push(i);
         }
       }
+      this.page = 1;
+      this.start = 0;
+      this.end = 10;
     },
     onPage: function (data) {
       this.tableData.slice(data.start);
