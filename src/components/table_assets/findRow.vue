@@ -15,17 +15,6 @@
     <div v-if="loadingSearch" class="progress white">
       <div class="indeterminate"></div>
     </div>
-    <div v-if="isFind" class="row blue-grey darken-1">
-      <table class="white-text" v-for="item in SearchResult" :key="item.index">
-        <tr>
-          <td>{{ item.id }}</td>
-          <td>{{ item.firstName }}</td>
-          <td>{{ item.lastName }}</td>
-          <td>{{ item.email }}</td>
-          <td>{{ item.phone }}</td>
-        </tr>
-      </table>
-    </div>
   </div>
 </template>
 
@@ -37,9 +26,9 @@ export default {
   },
   data: function (){
     return {
+      ArrayFiltred: [],
       loadingSearch: false,
       isFind: false,
-      SearchResult: {},
       searchResultId: {},
       inputText: '',
       inputType: 'id'
@@ -51,14 +40,15 @@ export default {
       const text = this.inputText.toLowerCase()
       const checkEmpty = text !== null && text !== undefined && text !== ''
       const isNumber = parseInt(text) ?? false
-      this.SearchResult = this.$parent.tableData.filter(item => {
+      this.ArrayFiltred = this.$parent.tableData.filter(item => {
         if (checkEmpty && !isNumber) {
           return Object.values(item).some(word => word.toString().toLowerCase().includes(text))
         } else if (checkEmpty && isNumber) {
           return item['id'] == this.inputText
         }
       });
-      if (this.SearchResult.length < 2) {
+      this.$emit('searchItem', this.ArrayFiltred)
+      if (this.ArrayFiltred.length < 2) {
         this.isFind = true
         this.loadingSearch = false
       } else {
