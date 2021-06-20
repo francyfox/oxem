@@ -2,26 +2,27 @@
   <div id="searchWrap">
     <div class="row flex">
       <div class="input-field col s6">
-        <input v-model="inputText" placeholder="Placeholder" id="search" type="text">
-        <label for="search"> Search (Lower Case)</label>
+        <input
+            v-model="inputText"
+            @keyup="searchItem"
+            placeholder="Placeholder"
+            id="search"
+            type="text"
+        >
+        <label for="search">Search</label>
       </div>
-      <select v-model="inputType" class="browser-default">
-        <option value="id">id</option>
-        <option value="firstName">firstName</option>
-        <option value="lastName">lastName</option>
-        <option value="email">email</option>
-        <option value="phone">phone</option>
-      </select>
-      <a class="waves-effect waves-light btn" @click="searchItem()">FIND USER</a>
     </div>
-    <div class="row blue-grey darken-1">
-      <table v-if="isFind" class="white-text">
+    <div v-if="loadingSearch" class="progress white">
+      <div class="indeterminate"></div>
+    </div>
+    <div v-if="isFind" class="row blue-grey darken-1">
+      <table class="white-text" v-for="item in SearchResult" :key="item.index">
         <tr>
-          <td>{{ rowSearchResult.id }}</td>
-          <td>{{ rowSearchResult.firstName }}</td>
-          <td>{{ rowSearchResult.lastName }}</td>
-          <td>{{ rowSearchResult.email }}</td>
-          <td>{{ rowSearchResult.phone }}</td>
+          <td>{{ item.id }}</td>
+          <td>{{ item.firstName }}</td>
+          <td>{{ item.lastName }}</td>
+          <td>{{ item.email }}</td>
+          <td>{{ item.phone }}</td>
         </tr>
       </table>
     </div>
@@ -36,8 +37,9 @@ export default {
   },
   data: function (){
     return {
+      loadingSearch: false,
       isFind: false,
-      rowSearchResult: {},
+      SearchResult: {},
       searchResultId: {},
       inputText: '',
       inputType: 'id'
@@ -45,20 +47,24 @@ export default {
   },
   methods: {
     searchItem: function () {
-      this.searchResultId = this.$parent.tableData.findIndex((item) => {
-        const text = this.inputText.toLowerCase()
-        const checkEmpty = text !== null && text !== undefined && text !== ''
-        const isNumber = parseInt(text) ?? false
-        if ( checkEmpty && isNumber) {
-          return text == item[this.inputType]
-        } else if (checkEmpty && !isNumber) {
-          return text.toLowerCase() == item[this.inputType].toLowerCase()
-        } else {
-          return false
+      this.loadingSearch = true
+      const text = this.inputText.toLowerCase()
+      const checkEmpty = text !== null && text !== undefined && text !== ''
+      const isNumber = parseInt(text) ?? false
+      this.SearchResult = this.$parent.tableData.filter(item => {
+        if (checkEmpty && !isNumber) {
+          return Object.values(item).some(word => word.toString().toLowerCase().includes(text))
+        } else if (checkEmpty && isNumber) {
+          return item['id'] == this.inputText
         }
-      })
-      this.isFind = true
-      this.rowSearchResult = this.$parent.tableData[this.searchResultId]
+      });
+      if (this.SearchResult.length < 2) {
+        this.isFind = true
+        this.loadingSearch = false
+      } else {
+        this.isFind = true
+        this.loadingSearch = true
+      }
     }
   }
 }
