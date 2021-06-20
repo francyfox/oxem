@@ -52,7 +52,10 @@
     <tbody v-if="!load">
     <tr v-for="(item, index) in tableData" :key="item.index" @click="setUserInfo(item)">
       <template v-if="index <= end - 1 && index > start - 1">
-        <td><ins>{{ index }}</ins>{{ item.id }}</td>
+        <td>
+          <ins>{{ index }}</ins>
+          {{ item.id }}
+        </td>
         <td>{{ item.firstName }}</td>
         <td>{{ item.lastName }}</td>
         <td>{{ item.email }}</td>
@@ -68,11 +71,13 @@
         <div class="spinner-layer spinner-red-only">
           <div class="circle-clipper left">
             <div class="circle"></div>
-          </div><div class="gap-patch">
-          <div class="circle"></div>
-        </div><div class="circle-clipper right">
-          <div class="circle"></div>
-        </div>
+          </div>
+          <div class="gap-patch">
+            <div class="circle"></div>
+          </div>
+          <div class="circle-clipper right">
+            <div class="circle"></div>
+          </div>
         </div>
       </div>
       <td></td>
@@ -109,11 +114,13 @@ export default {
           break
         case 'string':
           this.tableData = this.tableData.sort(function (a, b) {
-            if(a[colname] < b[colname]) { return -1; }
+            if (a[colname] < b[colname]) {
+              return -1;
+            }
             return 0;
           })
           if (onUp) {
-            this.tableData.reverse()
+            this.tableData.reverse();
           }
       }
     }

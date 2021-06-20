@@ -1,26 +1,26 @@
 <template>
   <div class="card indigo lighten-4">
     <find-row
-        @searchItem="onFind"
+      @searchItem="onFind"
     />
     {{ log }}
     <table-view
-      :tableData="SearchResult"
+      :end="end"
       :load="load"
       :start="start"
-      :end="end"
+      :tableData="SearchResult"
       @setUserInfo="onUserInfo"
     />
     <pagination
-      :pages-array="pagesArray"
+      :end="end"
       :page="page"
       :pageCount="pageCount"
+      :pages-array="pagesArray"
       :start="start"
-      :end="end"
       @changePage="onPage"
       @setPagesArray="changePagesArray"
     />
-    <user-panel v-if="showUser" :user="user" />
+    <user-panel v-if="showUser" :user="user"/>
   </div>
 </template>
 
@@ -28,12 +28,12 @@
 import axios from "axios";
 import findRow from "./table_assets/findRow";
 import pagination from "./table_assets/pagination";
-import tableView from "./table_assets/tableView";
 import Pagination from "./table_assets/pagination";
+import tableView from "./table_assets/tableView";
 import userPanel from "./table_assets/userPanel";
 
 export default {
-  name: "table",
+  name: "ResponseTable",
   components: {
     Pagination,
     findRow,
@@ -65,11 +65,11 @@ export default {
     },
   },
   created() {
-    const retApi = 'https://retoolapi.dev/KrBRnb/oxem'
-    // const fillApi =
-    //   "http://www.filltext.com/?rows=80&id={number|1000}&firstName={firstName}&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&address={addressObject}&description={lorem|32}";
+    // const retApi = 'https://retoolapi.dev/KrBRnb/oxem'
+    const fillApi =
+      "http://www.filltext.com/?rows=80&id={number|1000}&firstName={firstName}&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&address={addressObject}&description={lorem|32}";
     axios
-      .get(retApi)
+      .get(fillApi)
       .then((response) => {
         this.load = false;
         this.tableData = response.data;
@@ -97,6 +97,15 @@ export default {
       if (this.SearchResult.length === 0) {
         this.SearchResult = this.tableData;
       }
+      if (this.SearchResult.length !== 0) {
+        this.pagesArray = []
+        const del = this.SearchResult.length / 10;
+        const count = Math.ceil(del);
+        this.pageCount = count;
+        for (let i = 1; i <= count; i++) {
+          this.pagesArray.push(i);
+        }
+      }
     },
     onPage: function (data) {
       this.tableData.slice(data.start);
@@ -116,12 +125,15 @@ export default {
 .card {
   padding: 20px;
 }
+
 .preload .preloader-wrapper {
   margin: 0 auto;
 }
+
 table tr {
   cursor: pointer;
 }
+
 table td {
   position: relative;
 }
@@ -143,6 +155,7 @@ ins {
 .row {
   display: flex;
   align-items: center;
+
   .material-icons {
     &:hover {
       color: #ee6e73;
@@ -161,6 +174,7 @@ ins {
   .col {
     width: 70%;
   }
+
   p {
     padding: 0;
     margin: 0 0 5px;

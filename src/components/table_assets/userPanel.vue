@@ -3,7 +3,7 @@
     <div class="col">
       <div class="card-panel blue-grey darken-1">
         <span class="white-text">
-          <p>Выбран пользователь <b>{{ user.firstName }} {{ user.lastName}}</b></p>
+          <p>Выбран пользователь <b>{{ user.firstName }} {{ user.lastName }}</b></p>
           <p>Описание:</p>
           <p><i> {{ user.description }} </i></p>
           <div v-if="user.address.streetAddress">

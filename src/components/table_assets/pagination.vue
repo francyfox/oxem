@@ -1,10 +1,13 @@
 <template>
   <ul class="pagination">
-    <li class="waves-effect" :class="{ disabled: page == 1}"><a href="#"><i class="material-icons" @click.prevent="lastPage">chevron_left</i></a></li>
-    <li v-for="n in pagesArray" :key="n" :class="{ active: page == n ? true : false }">
-      <a @click="changePage(n)" v-if="n <= pagEnd && n + 1 > pagStart" :href="'#' + n">{{ n }}</a>
+    <li :class="{ disabled: page == 1}" class="waves-effect"><a href="#">
+      <i class="material-icons" @click.prevent="lastPage">chevron_left</i></a>
     </li>
-    <li class="waves-effect" :class="{ disabled: page == pageCount}"><a href="#" @click.prevent="nextPage"><i class="material-icons">chevron_right</i></a></li>
+    <li v-for="n in pagesArray" :key="n" :class="{ active: page == n ? true : false }">
+      <a v-if="n <= pagEnd && n + 1 > pagStart" :href="'#' + n" @click="changePage(n)">{{ n }}</a>
+    </li>
+    <li :class="{ disabled: page == pageCount}" class="waves-effect"><a href="#" @click.prevent="nextPage"><i
+        class="material-icons">chevron_right</i></a></li>
   </ul>
 </template>
 
@@ -47,7 +50,7 @@ export default {
       const step = 10
       this.$emit('changePage', {
         page: currentPageNumber,
-        start: ( currentPageNumber * step ) - step,
+        start: (currentPageNumber * step) - step,
         end: currentPageNumber * step
       })
     }
