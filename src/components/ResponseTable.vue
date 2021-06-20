@@ -12,11 +12,13 @@
       @setUserInfo="onUserInfo"
     />
     <pagination
+      :pages-array="pagesArray"
       :page="page"
-      :pageCount="setPageCount"
+      :pageCount="pageCount"
       :start="start"
       :end="end"
       @changePage="onPage"
+      @setPagesArray="changePagesArray"
     />
     <user-panel v-if="showUser" :user="user" />
   </div>
@@ -48,8 +50,9 @@ export default {
       load: true,
       tableData: [],
       // pagination
-      page: 1,
       pageCount: 1,
+      pagesArray: [],
+      page: 1,
       start: 0,
       end: 10,
       // search
@@ -62,28 +65,33 @@ export default {
     },
   },
   created() {
-    // const retApi = 'https://retoolapi.dev/KrBRnb/oxem'
-    const fillApi =
-      "http://www.filltext.com/?rows=80&id={number|1000}&firstName={firstName}&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&address={addressObject}&description={lorem|32}";
+    const retApi = 'https://retoolapi.dev/KrBRnb/oxem'
+    // const fillApi =
+    //   "http://www.filltext.com/?rows=80&id={number|1000}&firstName={firstName}&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&address={addressObject}&description={lorem|32}";
     axios
-      .get(fillApi)
+      .get(retApi)
       .then((response) => {
         this.load = false;
         this.tableData = response.data;
         this.SearchResult = response.data;
+        //
+        const del = this.tableData.length / 10;
+        const count = Math.ceil(del);
+        this.pageCount = count;
+        //
+        for (let i = 1; i <= count; i++) {
+          this.pagesArray.push(i);
+        }
       })
       .catch((error) => {
         this.log = error + ", please update page, something wrong with api url";
       });
   },
-  computed: {
-    setPageCount: function () {
-      const del = this.tableData.length / 10;
-      const count = Math.ceil(del);
-      return count;
-    },
-  },
   methods: {
+    changePagesArray: function (pages) {
+      this.pagesArray = pages;
+      this.page++;
+    },
     onFind: function (data) {
       this.SearchResult = data;
       if (this.SearchResult.length === 0) {
