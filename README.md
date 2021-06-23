@@ -1,5 +1,9 @@
 # oxem
 
+## Demo build
+
+http://gentle-hollows-11394.herokuapp.com/
+
 ## Project setup
 ```
 yarn install
