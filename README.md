@@ -4,6 +4,10 @@
 
 http://gentle-hollows-11394.herokuapp.com/
 
+## Docker image
+
+https://drive.google.com/file/d/17EkcUbl5Xg6opWwnE4lsuzJnIvnO6tD3/view?usp=sharing
+
 ## Project setup
 ```
 yarn install
