@@ -1,6 +1,6 @@
 # oxem
 
-## Demo build
+## Demo build (container sleep)
 
 http://gentle-hollows-11394.herokuapp.com/
 
